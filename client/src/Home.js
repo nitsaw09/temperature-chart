@@ -11,20 +11,41 @@ const GridWrapper = styled.div`
 `;
 export const Home = () =>  {
   const [options, setOptions] = useState({});
-  let feranoid = [];
-  let time = [];
   
-  const weatherData = () => {
+  const loadChart = () => {
     axios.get('weather')
       .then(response => {
         const data = response.data;
-        time = [];
-        feranoid = [];
+        const time = [];
+        const feranoid = [];
         time.push("current");
         feranoid.push(data.current.temp_f);
         data.forecast.forEach(data => {
           time.push(data.time.split(" ")[1]);
           feranoid.push(data.temp_f);
+        });
+
+        setOptions(() => {
+          return {
+            title: {
+              text: 'Temperature'
+            },
+            yAxis: {
+              title: {
+                  text: 'Feranoid'
+              }
+            },
+            xAxis: {
+              title: {
+                text: 'Time'
+              },
+              categories: time,
+            },
+            series: [{
+              type: 'line',
+              data: feranoid
+            }]
+          }
         });
       })
       .catch(error => {
@@ -33,30 +54,9 @@ export const Home = () =>  {
   };
 
   useEffect(() => {
+    loadChart();
     const interval = setInterval(() => {
-      weatherData();
-      setOptions(() => {
-        return {
-          title: {
-            text: 'Temperature'
-          },
-          yAxis: {
-            title: {
-                text: 'Feranoid'
-            }
-          },
-          xAxis: {
-            title: {
-              text: 'Time'
-            },
-            categories: time,
-          },
-          series: [{
-            type: 'line',
-            data: feranoid
-          }]
-        }
-      });
+      loadChart();
     }, 5000);
     return () => clearInterval(interval);
   }, []);
