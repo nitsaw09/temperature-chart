@@ -1,0 +1,10 @@
+version: "3"
+services:
+  weather-app:
+    build: .
+    container_name: "weather-app"
+    ports:
+      - "3000:3000"
+      - "5000:5000"
+    volumes:
+      - ./:/app
