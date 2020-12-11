@@ -2,6 +2,9 @@
 
 Weather APP to show the temperature  today for virginia.
 
+# Demo
+https://temp-chart-app.herokuapp.com/
+
 ## Installation
 
 1. For client go to client folder and run in terminal ```npm install```
